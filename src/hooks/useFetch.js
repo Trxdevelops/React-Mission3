@@ -6,9 +6,8 @@ import { useEffect, useState } from 'react';
 // Quien lo usa tiene que pasarla con useCallback: si fuera una función nueva en cada render,
 // el efecto se volvería a ejecutar en cada render y pediría los datos sin parar.
 export function useFetch(request) {
-  const [data, setData] = useState(null);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
+  // La respuesta se guarda junto a la petición (y el intento) que la ha producido
+  const [result, setResult] = useState({ request: null, attempt: 0, data: null, error: null });
   // Solo sirve para "Reintentar": al cambiar este número el efecto se vuelve a ejecutar
   const [attempt, setAttempt] = useState(0);
 
@@ -16,19 +15,13 @@ export function useFetch(request) {
     const controller = new AbortController();
 
     async function load() {
-      setLoading(true);
-      setError(null);
       try {
-        const result = await request(controller.signal);
-        // Si mientras tanto se ha cancelado, esta respuesta ya no le interesa a nadie
-        if (controller.signal.aborted) return;
-        setData(result);
-      } catch (err) {
-        // Al cancelar, fetch lanza un AbortError: no es un fallo y ya hay otra carga en marcha
-        if (controller.signal.aborted) return;
-        setError(err);
+        const data = await request(controller.signal);
+        if (!controller.signal.aborted) setResult({ request, attempt, data, error: null });
+      } catch (error) {
+        // Al cancelar, fetch lanza un AbortError: no es un fallo, ya hay otra carga en marcha
+        if (!controller.signal.aborted) setResult({ request, attempt, data: null, error });
       }
-      setLoading(false);
     }
 
     load();
@@ -38,9 +31,13 @@ export function useFetch(request) {
     return () => controller.abort();
   }, [request, attempt]);
 
+  // "Cargando" no es un estado aparte: se deriva. Si la respuesta guardada no es de la
+  // petición actual, es que la buena todavía no ha llegado.
+  const loading = result.request !== request || result.attempt !== attempt;
+
   function retry() {
     setAttempt((n) => n + 1);
   }
 
-  return { data, error, loading, retry };
+  return { data: result.data, error: result.error, loading, retry };
 }

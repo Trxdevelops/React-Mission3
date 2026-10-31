@@ -187,12 +187,304 @@ a {
   margin: 0;
 }
 
+/* ---------- Buscador y filtros ---------- */
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px 16px;
+  margin: 32px 0 0;
+}
+
+.field {
+  display: flex;
+  flex: 1 1 180px;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.field-name {
+  flex: 2 1 240px;
+}
+
+.field label {
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.field input,
+.field select {
+  min-height: 44px;
+  padding: 8px 12px;
+  font: inherit;
+  color: var(--ink);
+  background: var(--screen);
+  border: 2px solid var(--ink);
+  border-radius: 10px;
+}
+
+.toolbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* ---------- Resultados y barra de atributos ---------- */
+
+.results {
+  margin-top: 28px;
+}
+
+.results-title {
+  margin: 0;
+  font-family: var(--font-pixel);
+  font-size: 1.5rem;
+  font-weight: 400;
+  /* Al recibir el foco (cambio de página) se queda un poco separado del borde */
+  scroll-margin-top: 16px;
+}
+
+.results-title:focus {
+  outline: none;
+}
+
+.stats {
+  margin: 0 0 24px;
+}
+
+.stats-title {
+  margin: 0 0 8px;
+  font-size: 0.95rem;
+}
+
+/* Un "píxel" por Digimon, como los segmentos de una pantalla LCD */
+.pixel-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+}
+
+.pixel {
+  width: 14px;
+  height: 14px;
+  background: var(--attr);
+  border-radius: 2px;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 20px;
+  margin: 10px 0 0;
+  padding: 0;
+  font-size: 0.9rem;
+  list-style: none;
+}
+
+.legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.swatch {
+  display: inline-block;
+  flex: none;
+  width: 10px;
+  height: 10px;
+  background: var(--attr);
+  border-radius: 3px;
+}
+
+/* Las clases usan el nombre del atributo en la API (ver attributeColor en logic/digimon.js) */
+.attr-Vaccine {
+  --attr: var(--vaccine);
+}
+
+.attr-Data {
+  --attr: var(--data);
+}
+
+.attr-Virus {
+  --attr: var(--virus);
+}
+
+.attr-Free {
+  --attr: var(--free);
+}
+
+.attr-Variable {
+  --attr: var(--variable);
+}
+
+.attr-Unknown {
+  --attr: var(--unknown);
+}
+
+/* ---------- Rejilla de tarjetas ---------- */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(168px, 1fr));
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  width: 100%;
+  height: 100%;
+  padding: 12px;
+  font: inherit;
+  color: var(--ink);
+  text-align: left;
+  background: var(--screen);
+  border: 2px solid var(--ink);
+  border-radius: 14px;
+  cursor: pointer;
+}
+
+.card:hover {
+  background: var(--screen-hover);
+}
+
+.card-number {
+  font-family: var(--font-pixel);
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+}
+
+.card-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: contain;
+  /* Las imágenes de la API tienen fondo blanco: así se funden con la tarjeta */
+  mix-blend-mode: multiply;
+}
+
+.card-name {
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.card .tags {
+  margin-top: auto;
+  padding-top: 4px;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 1px 9px;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+}
+
+/* Tarjetas de carga */
+.card-skeleton {
+  border-color: var(--line);
+  cursor: default;
+}
+
+.skeleton-block {
+  display: block;
+  background: rgb(29 34 25 / 0.1);
+  border-radius: 6px;
+}
+
+.skeleton-img {
+  width: 100%;
+  aspect-ratio: 1;
+}
+
+.skeleton-line {
+  width: 80%;
+  height: 14px;
+}
+
+.skeleton-line.short {
+  width: 50%;
+}
+
+/* ---------- Mensajes: error y sin resultados ---------- */
+
+.state {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  padding: 48px 20px;
+  text-align: center;
+  background: var(--screen);
+  border: 2px solid var(--ink);
+  border-radius: 16px;
+}
+
+.state p {
+  max-width: 52ch;
+  margin: 0;
+}
+
+.state-title {
+  margin: 0;
+  font-family: var(--font-pixel);
+  font-size: 1.5rem;
+  font-weight: 400;
+}
+
+.state-error {
+  border-color: var(--error);
+  box-shadow: inset 0 0 0 2px var(--error);
+}
+
+/* ---------- Paginación ---------- */
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin: 32px 0 48px;
+}
+
+.page-info {
+  min-width: 10ch;
+  font-family: var(--font-pixel);
+  text-align: center;
+}
+
 /* ---------- Animaciones (solo si el usuario no pide menos movimiento) ---------- */
 /* steps(1) hace que se muevan "a saltos", como los sprites de una pantalla LCD */
 
 @media (prefers-reduced-motion: no-preference) {
   .egg {
     animation: wobble 4s steps(1) infinite;
+  }
+
+  .skeleton-block {
+    animation: blink 1.2s steps(1) infinite;
+  }
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0.45;
   }
 }
 
@@ -227,5 +519,22 @@ a {
   .egg {
     order: -1;
     width: 64px;
+  }
+
+  .toolbar-actions {
+    flex: 1 1 100%;
+  }
+
+  .toolbar-actions .button {
+    flex: 1;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .card {
+    padding: 10px;
   }
 }

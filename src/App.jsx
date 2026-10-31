@@ -1,30 +1,28 @@
-import { useCallback } from 'react';
+import { useState } from 'react';
 import AppHeader from './components/AppHeader.jsx';
 import AppFooter from './components/AppFooter.jsx';
-import { getDigimonPage } from './api/digimonApi.js';
-import { useFetch } from './hooks/useFetch.js';
+import SearchForm from './components/SearchForm.jsx';
+import ResultsPanel from './components/ResultsPanel.jsx';
 import { EMPTY_FILTERS } from './config.js';
 
 export default function App() {
-  // Prueba de la capa de datos: primera página sin filtros
-  const loadPage = useCallback((signal) => getDigimonPage({ ...EMPTY_FILTERS, page: 0 }, signal), []);
-  const { data, error, loading } = useFetch(loadPage);
+  // Filtros aplicados y página: los comparten el buscador y el listado, por eso viven aquí
+  const [filters, setFilters] = useState(EMPTY_FILTERS);
+  const [page, setPage] = useState(0);
+  const [selected, setSelected] = useState(null);
+
+  function search(newFilters) {
+    setFilters(newFilters);
+    setPage(0); // una búsqueda nueva siempre empieza en la primera página
+  }
 
   return (
     <>
       <AppHeader />
       <main className="page">
-        {loading && <p className="status">Cargando Digimon…</p>}
-        {error && <p className="status">{error.message}</p>}
-        {data && (
-          <ul>
-            {data.digimons.map((digimon) => (
-              <li key={digimon.id}>
-                {digimon.name} · {digimon.levels.join(', ')} · {digimon.attributes.join(', ')}
-              </li>
-            ))}
-          </ul>
-        )}
+        <SearchForm filters={filters} onSearch={search} />
+        {selected && <p className="status">Has elegido a {selected.name}. La ficha llega en la siguiente fase.</p>}
+        <ResultsPanel filters={filters} page={page} onPageChange={setPage} onSelect={setSelected} />
       </main>
       <AppFooter />
     </>
