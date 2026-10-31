@@ -1,111 +1,231 @@
+/* DigiArchivo: estética de pantalla LCD de mascota virtual (v-pet) de los 90.
+   La carcasa amarilla es el único elemento llamativo; el resto es tinta sobre LCD. */
+
+/* ---------- Variables ---------- */
+
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  --lcd: #dfe4d0;
+  --lcd-dots: rgb(29 34 25 / 0.08);
+  --screen: #eef1e4;
+  --screen-hover: #f6f8ef;
+  --ink: #1d2219;
+  --ink-soft: #4b5443;
+  --ink-hover: #353d2f;
+  --line: rgb(29 34 25 / 0.22);
+  --shell: #f2c200;
+  --error: #b3261e;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  /* Un color por atributo */
+  --vaccine: #2a78d6;
+  --data: #1baf7a;
+  --virus: #6250d6;
+  --free: #eda100;
+  --variable: #e87ba4;
+  --unknown: #7d8471;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --font-pixel: 'DotGothic16', 'Courier New', monospace;
+  --font-body: 'M PLUS Rounded 1c', 'Segoe UI', system-ui, sans-serif;
 
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
+  color-scheme: light;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
+/* ---------- Base ---------- */
 
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--ink);
+  background: var(--lcd);
 }
 
-#root {
-  width: 1126px;
+img {
   max-width: 100%;
+}
+
+a {
+  color: var(--ink);
+  text-underline-offset: 3px;
+}
+
+:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 3px;
+}
+
+::selection {
+  color: var(--ink);
+  background: var(--shell);
+}
+
+/* ---------- Botones ---------- */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 8px 20px;
+  font: inherit;
+  font-weight: 700;
+  color: var(--screen);
+  background: var(--ink);
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  box-shadow: 0 3px 0 rgb(29 34 25 / 0.35);
+  cursor: pointer;
+}
+
+.button:hover {
+  background: var(--ink-hover);
+}
+
+.button:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 rgb(29 34 25 / 0.35);
+}
+
+.button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.button-ghost {
+  color: var(--ink);
+  background: transparent;
+  box-shadow: none;
+}
+
+.button-ghost:hover {
+  background: rgb(29 34 25 / 0.08);
+}
+
+/* ---------- Cabecera: carcasa + pantalla ---------- */
+
+.shell {
+  width: min(1200px, 100% - 32px);
+  margin: 16px auto 0;
+  padding: clamp(16px, 3vw, 28px);
+  background: var(--shell);
+  border-radius: 32px;
+  box-shadow:
+    inset 0 -6px 0 rgb(29 34 25 / 0.18),
+    inset 0 3px 0 rgb(255 255 255 / 0.35);
+}
+
+.screen {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 24px;
+  padding: clamp(20px, 4vw, 40px);
+  background-color: var(--lcd);
+  background-image: radial-gradient(var(--lcd-dots) 1px, transparent 1.5px);
+  background-size: 5px 5px;
+  border: 3px solid var(--ink);
+  border-radius: 20px;
+  box-shadow: inset 4px 4px 0 rgb(29 34 25 / 0.08);
+}
+
+.logo {
+  margin: 0;
+  font-family: var(--font-pixel);
+  font-size: clamp(2.75rem, 1.6rem + 5vw, 5rem);
+  font-weight: 400;
+  line-height: 1;
+  /* La "sombra" de los píxeles de una pantalla LCD real */
+  text-shadow: 3px 3px 0 rgb(29 34 25 / 0.14);
+}
+
+.intro {
+  max-width: 52ch;
+  margin: 16px 0 0;
+  font-size: 1.05rem;
+}
+
+.egg {
+  width: clamp(72px, 10vw, 120px);
+  height: auto;
+  fill: var(--ink);
+  filter: drop-shadow(3px 3px 0 rgb(29 34 25 / 0.14));
+  transform-origin: 50% 100%;
+}
+
+/* ---------- Página y pie ---------- */
+
+.page {
+  width: min(1200px, 100% - 32px);
   margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
 }
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
+.status {
+  min-height: 1.6em;
+  margin: 20px 0 8px;
+  color: var(--ink-soft);
 }
 
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
+.footer {
+  width: min(1200px, 100% - 32px);
+  margin: 0 auto;
+  padding: 24px 0 40px;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  border-top: 2px solid var(--line);
 }
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
+
+.footer p {
+  max-width: 60ch;
   margin: 0;
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+/* ---------- Animaciones (solo si el usuario no pide menos movimiento) ---------- */
+/* steps(1) hace que se muevan "a saltos", como los sprites de una pantalla LCD */
+
+@media (prefers-reduced-motion: no-preference) {
+  .egg {
+    animation: wobble 4s steps(1) infinite;
+  }
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+@keyframes wobble {
+  0%,
+  92%,
+  100% {
+    transform: none;
+  }
+
+  80% {
+    transform: rotate(-8deg);
+  }
+
+  84% {
+    transform: rotate(8deg);
+  }
+
+  88% {
+    transform: rotate(-5deg);
+  }
+}
+
+/* ---------- Móvil ---------- */
+
+@media (max-width: 640px) {
+  .screen {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .egg {
+    order: -1;
+    width: 64px;
+  }
 }
