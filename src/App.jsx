@@ -4,10 +4,13 @@ import AppFooter from './components/AppFooter.jsx';
 import DetailModal from './components/DetailModal.jsx';
 import ResultsPanel from './components/ResultsPanel.jsx';
 import SearchForm from './components/SearchForm.jsx';
+import TeamPanel from './components/TeamPanel.jsx';
+import { useTeam } from './hooks/useTeam.js';
 import { EMPTY_FILTERS } from './config.js';
 
+// App guarda el estado que comparten varios componentes y lo reparte por props.
 export default function App() {
-  // Filtros aplicados y página: los comparten el buscador y el listado, por eso viven aquí
+  // Filtros aplicados y página: los usan el buscador y el listado
   const [filters, setFilters] = useState(EMPTY_FILTERS);
   const [page, setPage] = useState(0);
 
@@ -15,12 +18,15 @@ export default function App() {
   // No hay un estado "ficha abierta": está abierta si el rastro tiene algo.
   const [trail, setTrail] = useState([]);
 
+  // El equipo lo usan la carcasa (panel) y la ficha (botón), por eso también está aquí arriba
+  const team = useTeam();
+
   function search(newFilters) {
     setFilters(newFilters);
     setPage(0); // una búsqueda nueva siempre empieza en la primera página
   }
 
-  // Abrir desde el listado: empieza un rastro nuevo
+  // Abrir desde el listado o desde el equipo: empieza un rastro nuevo
   function openDetail(digimon) {
     setTrail([{ id: digimon.id, name: digimon.name }]);
   }
@@ -47,7 +53,9 @@ export default function App() {
 
   return (
     <>
-      <AppHeader />
+      <AppHeader>
+        <TeamPanel members={team.members} onOpen={openDetail} onRemove={team.remove} />
+      </AppHeader>
 
       <main className="page">
         <SearchForm filters={filters} onSearch={search} />
@@ -57,7 +65,15 @@ export default function App() {
       <AppFooter />
 
       {trail.length > 0 && (
-        <DetailModal trail={trail} onJump={jumpTo} onEvolution={openEvolution} onClose={closeDetail} />
+        <DetailModal
+          trail={trail}
+          onJump={jumpTo}
+          onEvolution={openEvolution}
+          onClose={closeDetail}
+          inTeam={team.isInTeam(trail.at(-1).id)}
+          teamFull={team.isFull}
+          onToggleTeam={team.toggle}
+        />
       )}
     </>
   );

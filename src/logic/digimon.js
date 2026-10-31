@@ -1,6 +1,6 @@
 // Lógica de datos: convierte las respuestas de la API en objetos limpios y listos para pintar.
 // Aquí no hay fetch ni React, solo transformaciones con map / filter / reduce.
-import { ATTRIBUTES, LEVELS } from '../config.js';
+import { ADVANTAGES, ATTRIBUTES, LEVELS } from '../config.js';
 
 // Atributos con color propio. El resto (Unknown, No Data...) se pinta como "Desconocido".
 const MAIN_ATTRIBUTES = ['Vaccine', 'Data', 'Virus', 'Free', 'Variable'];
@@ -125,6 +125,20 @@ export function getAttributeStats(digimons) {
   return [...MAIN_ATTRIBUTES, 'Unknown']
     .filter((key) => counts[key] > 0)
     .map((key) => ({ key, label: translateAttribute(key), count: counts[key] }));
+}
+
+// ---------- Digi-Equipo ----------
+
+// Para cada atributo rival del triángulo, mira si algún miembro del equipo tiene el atributo
+// que le gana. Ejemplo: contra Virus hay ventaja si en el equipo hay algún Vacuna.
+export function getTeamCoverage(members) {
+  const teamAttributes = new Set(members.flatMap((member) => member.attributes));
+
+  return Object.entries(ADVANTAGES).map(([counter, rival]) => ({
+    rival,
+    counter,
+    covered: teamAttributes.has(counter),
+  }));
 }
 
 // ---------- Filtros ----------

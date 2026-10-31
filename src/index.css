@@ -160,6 +160,138 @@ a {
   transform-origin: 50% 100%;
 }
 
+/* ---------- Digi-Equipo (dentro de la carcasa) ---------- */
+
+.team {
+  margin-top: 20px;
+}
+
+.team-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.team-title {
+  margin: 0;
+  font-family: var(--font-pixel);
+  font-size: 1.5rem;
+  font-weight: 400;
+}
+
+.team-count {
+  font-family: var(--font-pixel);
+}
+
+.team-slots {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.team-slot {
+  position: relative;
+  min-height: 112px;
+}
+
+/* Hueco libre: un recuadro punteado, como una casilla vacía de la pantalla */
+.team-slot-empty {
+  border: 2px dashed rgb(29 34 25 / 0.35);
+  border-radius: 12px;
+}
+
+.team-member {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  width: 100%;
+  height: 100%;
+  padding: 8px 6px;
+  font: inherit;
+  color: var(--ink);
+  background-color: var(--lcd);
+  background-image: radial-gradient(var(--lcd-dots) 1px, transparent 1.5px);
+  background-size: 5px 5px;
+  border: 2px solid var(--ink);
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.team-member img {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+
+.team-name {
+  max-width: 100%;
+  overflow: hidden;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.team-remove {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  font: inherit;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--screen);
+  background: var(--ink);
+  border: 2px solid var(--shell);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.team-hint,
+.coverage-tip {
+  margin: 10px 0 0;
+}
+
+.coverage-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.coverage-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 10px;
+  font-size: 0.9rem;
+  border: 2px dashed rgb(29 34 25 / 0.45);
+  border-radius: 999px;
+}
+
+.coverage-item.is-covered {
+  background: var(--lcd);
+  border-style: solid;
+  border-color: var(--ink);
+}
+
+.team-action {
+  margin-top: 4px;
+}
+
+.team-action p {
+  margin: 8px 0 0;
+}
+
 /* ---------- Página y pie ---------- */
 
 .page {
@@ -832,6 +964,10 @@ body.modal-open {
   .egg {
     order: -1;
     width: 64px;
+  }
+
+  .team-slots {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .toolbar-actions {

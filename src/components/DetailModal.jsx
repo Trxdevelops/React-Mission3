@@ -3,12 +3,14 @@ import DigimonDetail from './DigimonDetail.jsx';
 import EvolutionTrail from './EvolutionTrail.jsx';
 import LoadingMessage from './LoadingMessage.jsx';
 import StateMessage from './StateMessage.jsx';
+import TeamButton from './TeamButton.jsx';
 import { getDigimon, getErrorMessage } from '../api/digimonApi.js';
 import { useFetch } from '../hooks/useFetch.js';
 
 // Ventana con la ficha del último Digimon del rastro.
 // Solo existe mientras hay una ficha abierta: App la monta y la desmonta.
-export default function DetailModal({ trail, onJump, onEvolution, onClose, children }) {
+// El equipo vive en App; aquí solo llega si este Digimon está dentro, si está lleno y qué hacer al pulsar.
+export default function DetailModal({ trail, onJump, onEvolution, onClose, inTeam, teamFull, onToggleTeam }) {
   const current = trail.at(-1);
   const closeButtonRef = useRef(null);
   const titleRef = useRef(null);
@@ -80,7 +82,7 @@ export default function DetailModal({ trail, onJump, onEvolution, onClose, child
               onEvolution={onEvolution}
               titleRef={titleRef}
             >
-              {children}
+              <TeamButton inTeam={inTeam} teamFull={teamFull} onToggle={() => onToggleTeam(digimon)} />
             </DigimonDetail>
           )}
         </div>
