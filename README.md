@@ -91,7 +91,10 @@ Las keys son ids de la API (Digimon, evoluciones, técnicas) o valores únicos (
 
 El proyecto lo he hecho con Claude (claude.ai) a partir de mi código de la M2 y de los cuatro temas de teoría de la asignatura, que le pasé como PDF.
 
-Prompt real: «Reconstruye (o reinventa) tu app de la misión anterior (DigiApi) en React 19 […] Usa código que se haya presentado únicamente en los 4 temas de teoría adjuntos en pdf, haz 5 commits mínimos».
+Prompts reales: 
+
+«Optimiza el useEffect que hace el fetch a la API de Digimon y explícame cada cambio.»
+«¿Se puede simplificar cómo renderizo la lista de tarjetas de Digimon en App.jsx? Hazlo y dime por qué es mejor.»
 
 Se construyó por fases (un commit por fase) y en cada una se comprobó en el navegador con una Digi-API simulada: paginación, búsqueda, filtros, búsqueda sin resultados, errores 500 y "Reintentar", imágenes rotas, la ficha, el rastro, Escape y clic fuera, el equipo al recargar y con el localStorage roto, y respuestas lentas pasando de página rápido.
 
